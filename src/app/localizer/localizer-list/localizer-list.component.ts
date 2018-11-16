@@ -48,7 +48,9 @@ export class LocalizerListComponent implements OnInit {
   }
 
   selectLanguage(language: string) {
+    // would like to implement url changes on 
     // this.router.navigate(['/#' + this.selectedLanguage]);
+    this.selectLocalization(null);
     this.selectedLanguage = language;
     this.localizationService
       .getLocalizations()

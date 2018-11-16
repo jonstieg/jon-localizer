@@ -3,42 +3,42 @@ import { Localization } from './localization';
 import { Http, Response } from '@angular/http';
 
 @Injectable()
-export class ContactService {
-    private contactsUrl = '/api/contacts';
+export class LocalizationService {
+    private localizationUrl = '/api/localization';
     private downloadUrl = '/api/download';
     private duplicateUrl = 'api/duplicate';
     constructor (private http: Http) {}
 
-    // get("/api/contacts")
-    getContacts(): Promise<Localization[]> {
-      return this.http.get(this.contactsUrl)
+    // get("/api/localization")
+    getLocalizations(): Promise<Localization[]> {
+      return this.http.get(this.localizationUrl)
                  .toPromise()
                  .then(response => response.json() as Localization[])
                  .catch(this.handleError);
     }
 
-    // post("/api/contacts")
-    createContact(newContact: Localization): Promise<Localization> {
-      return this.http.post(this.contactsUrl, newContact)
+    // post("/api/localization")
+    createLocalization(newLocalization: Localization): Promise<Localization> {
+      return this.http.post(this.localizationUrl, newLocalization)
                  .toPromise()
                  .then(response => response.json() as Localization)
                  .catch(this.handleError);
     }
 
-    // get("/api/contacts/:id") endpoint not used by Angular app
+    // get("/api/localization/:id") endpoint not used by Angular app
 
-    // delete("/api/contacts/:id")
-    deleteContact(delContactId: String): Promise<String> {
-      return this.http.delete(this.contactsUrl + '/' + delContactId)
+    // delete("/api/localization/:id")
+    deleteLocalization(delLocalizationId: String): Promise<String> {
+      return this.http.delete(this.localizationUrl + '/' + delLocalizationId)
                  .toPromise()
                  .then(response => response.json() as String)
                  .catch(this.handleError);
     }
 
-    // put("/api/contacts/:id")
-    updateContact(putContact: Localization): Promise<Localization> {
-      var putUrl = this.contactsUrl + '/' + putContact._id;
-      return this.http.put(putUrl, putContact)
+    // put("/api/localization/:id")
+    updateLocalization(putLocalization: Localization): Promise<Localization> {
+      var putUrl = this.localizationUrl + '/' + putLocalization._id;
+      return this.http.put(putUrl, putLocalization)
                  .toPromise()
                  .then(response => response.json() as Localization)
                  .catch(this.handleError);
@@ -53,8 +53,8 @@ export class ContactService {
     }
 
     // post("/api/duplicate")
-    duplicateLocalization(newContact: Localization): Promise<Localization> {
-      return this.http.post(this.duplicateUrl, newContact)
+    duplicateLocalization(newLocalization: Localization): Promise<Localization> {
+      return this.http.post(this.duplicateUrl, newLocalization)
                  .toPromise()
                  .then(response => response.json() as Localization)
                  .catch(this.handleError);

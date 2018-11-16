@@ -16,22 +16,22 @@
   
     <ul class="list-group">
       <li class="list-group-item"
-        *ngFor="let contact of contacts"
-        (click)="selectContact(contact)"
-        [class.active]="contact === selectedContact">
-        {{contact.string}}
+        *ngFor="let localization of localizations"
+        (click)="selectLocalization(localization)"
+        [class.active]="localization === selectedLocalization">
+        {{localization.string}}
       </li>
     </ul>
-    <button class="btn btn-primary" (click)="createNewContact()">New</button>
-    <button class="btn btn-warning" (click)="downloadContacts()">Download</button>
+    <button class="btn btn-primary" (click)="createNewLocalization()">New</button>
+    <button class="btn btn-warning" (click)="downloadLocalizations()">Download</button>
   </div>
   <div class="col-md-5 col-md-offset-2">
-    <contact-details
-      [contact]="selectedContact"
-      [createHandler]="addContact"
+    <localizer-details
+      [localization]="selectedLocalization"
+      [createHandler]="addLocalization"
       [duplicateHandler]="duplicateLocalization"
-      [updateHandler]="updateContact"
-      [deleteHandler]="deleteContact">
-    </contact-details>
+      [updateHandler]="updateLocalization"
+      [deleteHandler]="deleteLocalization">
+    </localizer-details>
   </div>
 </div>

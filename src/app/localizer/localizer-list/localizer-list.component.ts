@@ -1,27 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { Localization } from '../localization';
-import { ContactService } from '../contact.service';
-import { ContactDetailsComponent } from '../contact-details/contact-details.component';
-// import { Router } from '@angular/router';
-import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from '../localization.service';
+import { LocalizerDetailsComponent } from '../localizer-details/localizer-details.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
-  selector: 'contact-list',
-  templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.css'],
-  providers: [ContactService]
+  selector: 'localizer-list',
+  templateUrl: './localizer-list.component.html',
+  styleUrls: ['./localizer-list.component.css'],
+  providers: [LocalizationService]
 })
 
-export class ContactListComponent implements OnInit {
+export class LocalizerListComponent implements OnInit {
 
   languages: string[]
   selectedLanguage: string
-  contacts: Localization[]
-  selectedContact: Localization
+  localizations: Localization[]
+  selectedLocalization: Localization
 
-  constructor(private contactService: ContactService, private route: ActivatedRoute, private router: Router) { }
-  // constructor(private contactService: ContactService, private router: Router) { }
+  constructor(private localizationService: LocalizationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.languages = ['English', 'French', 'German', 'Italian', 'Spanish',];
@@ -36,88 +34,84 @@ export class ContactListComponent implements OnInit {
         }
       }
     );
-    this.contactService
-      .getContacts()
-      .then((contacts: Localization[]) => {
-        this.contacts = contacts.filter(contact => contact.language === this.selectedLanguage);
+    this.localizationService
+      .getLocalizations()
+      .then((localizations: Localization[]) => {
+        this.localizations = localizations.filter(localization => localization.language === this.selectedLanguage);
       });
   }
 
-  private getIndexOfContact = (contactId: String) => {
-    return this.contacts.findIndex((contact) => {
-      return contact._id === contactId;
+  private getIndexOfLocalization = (localizationId: String) => {
+    return this.localizations.findIndex((localization) => {
+      return localization._id === localizationId;
     });
   }
 
   selectLanguage(language: string) {
     // this.router.navigate(['/#' + this.selectedLanguage]);
     this.selectedLanguage = language;
-    this.contactService
-      .getContacts()
-      .then((contacts: Localization[]) => {
-        this.contacts = contacts.filter(contact => contact.language === this.selectedLanguage);
+    this.localizationService
+      .getLocalizations()
+      .then((localizations: Localization[]) => {
+        this.localizations = localizations.filter(localization => localization.language === this.selectedLanguage);
       });
   }
 
-  selectContact(contact: Localization) {
-    if (this.selectedContact === contact) {
-      this.selectedContact = null;
+  selectLocalization(localization: Localization) {
+    if (this.selectedLocalization === localization) {
+      this.selectedLocalization = null;
     } else {
-      this.selectedContact = contact
+      this.selectedLocalization = localization
     }
   }
 
-  createNewContact() {
-    var contact: Localization = {
+  createNewLocalization() {
+    var localization: Localization = {
       string: '',
       localization: '',
       comment: '',
       language: this.selectedLanguage
     };
 
-    // By default, a newly-created contact will have the selected state.
-    this.selectContact(contact);
+    // By default, a newly-created localization will have the selected state.
+    this.selectLocalization(localization);
   }
 
-  deleteContact = (contactId: String) => {
-    var idx = this.getIndexOfContact(contactId);
+  deleteLocalization = (localizationId: String) => {
+    var idx = this.getIndexOfLocalization(localizationId);
     if (idx !== -1) {
-      this.contacts.splice(idx, 1);
-      this.selectContact(null);
+      this.localizations.splice(idx, 1);
+      this.selectLocalization(null);
     }
-    return this.contacts;
+    return this.localizations;
   }
 
-  addContact = (contact: Localization) => {
-    contact.language = this.selectedLanguage;
-    this.contacts.push(contact);
-    this.selectContact(null);
-    return this.contacts;
+  addLocalization = (localization: Localization) => {
+    localization.language = this.selectedLanguage;
+    this.localizations.push(localization);
+    this.selectLocalization(null);
+    return this.localizations;
   }
 
-  duplicateLocalization = (contact: Localization) => {
-    contact.language = this.selectedLanguage;
-    this.contacts.push(contact);
-    this.selectContact(null);
-    return this.contacts;
+  duplicateLocalization = (localization: Localization) => {
+    localization.language = this.selectedLanguage;
+    this.localizations.push(localization);
+    this.selectLocalization(null);
+    return this.localizations;
   }
 
-  updateContact = (contact: Localization) => {
-    var idx = this.getIndexOfContact(contact._id);
+  updateLocalization = (localization: Localization) => {
+    var idx = this.getIndexOfLocalization(localization._id);
     if (idx !== -1) {
-      this.contacts[idx] = contact;
+      this.localizations[idx] = localization;
     }
-    this.selectContact(null);
-    return this.contacts;
+    this.selectLocalization(null);
+    return this.localizations;
   }
 
-  downloadContacts = () => {
-    // this.contactService.getDownload(this.selectedLanguage).then((download: any) => {
-    //   this.downloadFile(download)
-    //   console.log(download);
-    // });
+  downloadLocalizations = () => {
     var textForFile = '';
-    this.contacts.forEach(function (localization) {
+    this.localizations.forEach(function (localization) {
       if (localization.comment) {
         textForFile += '/* ' + localization.comment + ' */\n';
       }

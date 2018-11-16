@@ -3,7 +3,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var CONTACTS_COLLECTION = "contacts";
+var LOCALIZATIONS_COLLECTION = "localization";
 
 var app = express();
 app.use(bodyParser.json());
@@ -35,7 +35,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:2701
   });
 });
 
-// CONTACTS API ROUTES BELOW
+// LCOALIZATIONS API ROUTES BELOW
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -46,31 +46,31 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({ "error": message });
 }
 
-/*  "/api/contacts"
- *    GET: finds all contacts
- *    POST: creates a new contact
+/*  "/api/localization"
+ *    GET: finds all localization
+ *    POST: creates a new localization
  */
 
-app.get("/api/contacts", function (req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function (err, docs) {
+app.get("/api/localization", function (req, res) {
+  db.collection(LOCALIZATIONS_COLLECTION).find({}).toArray(function (err, docs) {
     if (err) {
-      handleError(res, err.message, "Failed to get contacts.");
+      handleError(res, err.message, "Failed to get localization.");
     } else {
       res.status(200).json(docs);
     }
   });
 });
 
-app.post("/api/contacts", function (req, res) {
-  var newContact = req.body;
-  newContact.createDate = new Date();
+app.post("/api/localization", function (req, res) {
+  var newLocalization = req.body;
+  newLocalization.createDate = new Date();
 
   if (!req.body.string) {
     handleError(res, "Invalid user input", "Must provide a string.", 400);
   } else {
-    db.collection(CONTACTS_COLLECTION).insertOne(newContact, function (err, doc) {
+    db.collection(LOCALIZATIONS_COLLECTION).insertOne(newLocalization, function (err, doc) {
       if (err) {
-        handleError(res, err.message, "Failed to create new contact.");
+        handleError(res, err.message, "Failed to create new localization.");
       } else {
         res.status(201).json(doc.ops[0]);
       }
@@ -78,28 +78,28 @@ app.post("/api/contacts", function (req, res) {
   }
 });
 
-/*  "/api/contacts/:id"
- *    GET: find contact by id
- *    PUT: update contact by id
- *    DELETE: deletes contact by id
+/*  "/api/localization/:id"
+ *    GET: find localization by id
+ *    PUT: update localization by id
+ *    DELETE: deletes localization by id
  */
 
-app.get("/api/contacts/:id", function (req, res) {
-  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function (err, doc) {
+app.get("/api/localization/:id", function (req, res) {
+  db.collection(LOCALIZATIONS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function (err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to get contact");
+      handleError(res, err.message, "Failed to get localization");
     } else {
       res.status(200).json(doc);
     }
   });
 });
 
-app.put("/api/contacts/:id", function (req, res) {
+app.put("/api/localization/:id", function (req, res) {
   var updateDoc = req.body;
   console.log(updateDoc._id);
-  db.collection(CONTACTS_COLLECTION).updateOne({ _id: new ObjectID(req.params.id) }, { $set: { "string": updateDoc.string, "localization": updateDoc.localization, "comment": updateDoc.comment, "language": updateDoc.language } }, function (err, doc) {
+  db.collection(LOCALIZATIONS_COLLECTION).updateOne({ _id: new ObjectID(req.params.id) }, { $set: { "string": updateDoc.string, "localization": updateDoc.localization, "comment": updateDoc.comment, "language": updateDoc.language } }, function (err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to update contact - " + updateDoc.string);
+      handleError(res, err.message, "Failed to update localization - " + updateDoc.string);
       console.log("error");
     } else {
       console.log(req.param.id);
@@ -109,10 +109,10 @@ app.put("/api/contacts/:id", function (req, res) {
   });
 });
 
-app.delete("/api/contacts/:id", function (req, res) {
-  db.collection(CONTACTS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function (err, result) {
+app.delete("/api/localization/:id", function (req, res) {
+  db.collection(LOCALIZATIONS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function (err, result) {
     if (err) {
-      handleError(res, err.message, "Failed to delete contact");
+      handleError(res, err.message, "Failed to delete localization");
     } else {
       res.status(200).json(req.params.id);
     }
@@ -120,13 +120,13 @@ app.delete("/api/contacts/:id", function (req, res) {
 });
 
 /*  "/api/download/:language"
- *    GET: download all contacts
+ *    GET: download all localization
  */
 
 app.get("/api/download/:language", function (req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function (err, docs) {
+  db.collection(LOCALIZATIONS_COLLECTION).find({}).toArray(function (err, docs) {
     if (err) {
-      handleError(res, err.message, "Failed to download contacts.");
+      handleError(res, err.message, "Failed to download localization.");
     } else {
       // docs = req.params.language;
       // console.log(docs);
@@ -148,16 +148,16 @@ app.post("/api/duplicate", function (req, res) {
   if (!req.body.string) {
     handleError(res, "Invalid user input", "Must provide a string.", 400);
   } else {
-    var newContacts = [];
+    var newLocalizations = [];
     for (var i = 0; i < languages.length; i++) {
-      var newContact = JSON.parse(JSON.stringify(req.body));
-      newContact.createDate = new Date();
-      newContact.language = languages[i];
-      newContacts.push(newContact);
+      var newLocalization = JSON.parse(JSON.stringify(req.body));
+      newLocalization.createDate = new Date();
+      newLocalization.language = languages[i];
+      newLocalizations.push(newLocalization);
     }
-    db.collection(CONTACTS_COLLECTION).insertMany(newContacts, function (err, doc) {
+    db.collection(LOCALIZATIONS_COLLECTION).insertMany(newLocalizations, function (err, doc) {
       if (err) {
-        handleError(res, err.message, "Failed to create new contact.");
+        handleError(res, err.message, "Failed to create new localization.");
       } else {
         res.status(201).json(doc.ops[0]);
       }

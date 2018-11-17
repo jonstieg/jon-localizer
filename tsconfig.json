@@ -2,19 +2,27 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
+    // "outDir": "typeScript",
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": ["node"],
     "lib": [
       "es2016",
       "dom"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "typescript"
+  ]
 }

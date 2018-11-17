@@ -119,27 +119,6 @@ app.delete("/api/localization/:id", function (req, res) {
   });
 });
 
-/*  "/api/download/:language"
- *    GET: download all localization
- */
-
-app.get("/api/download/:language", function (req, res) {
-  db.collection(LOCALIZATIONS_COLLECTION).find({}).toArray(function (err, docs) {
-    if (err) {
-      handleError(res, err.message, "Failed to download localization.");
-    } else {
-      // docs = req.params.language;
-      // console.log(docs);
-      var text = req.params.language;
-      res.setHeader('Content-type', "application/octet-stream");
-      // res.setHeader('Content-disposition', 'attachment; filename=file.txt');
-      // res.charset = 'UTF-8';
-      res.send(text);
-    }
-  });
-});
-
-
 /*  "/api/duplicate"
  *    POST: duplicate localization across languages
  */

@@ -44,14 +44,6 @@ export class LocalizationService {
                  .catch(this.handleError);
     }
 
-    // get("/api/download/:language")
-    getDownload(language: string): Promise<string> {
-      return this.http.get(this.downloadUrl + '/' + language)
-                 .toPromise()
-                 .then(response => response.text() as string)
-                 .catch(this.handleError);
-    }
-
     // post("/api/duplicate")
     duplicateLocalization(newLocalization: Localization): Promise<Localization> {
       return this.http.post(this.duplicateUrl, newLocalization)

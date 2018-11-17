@@ -8,19 +8,19 @@
   <form class="col-md-12">
     <div class="form-group">
       <label for="localization-email">String</label><label class="required-asterisk" *ngIf="!localization.string">*</label>
-      <input class="form-control" name="localization-string" [(ngModel)]="localization.string" placeholder="Required"/>
+      <input class="form-control" id="localization-string" [(ngModel)]="localization.string" placeholder="Required"/>
     </div>
     <div class="form-group">
       <label for="localization-phone-mobile">Localization</label>
-      <input class="form-control" name="localization-localization" [(ngModel)]="localization.localization" placeholder="Optional"/>
+      <input class="form-control" id="localization-localization" [(ngModel)]="localization.localization" placeholder="Optional"/>
     </div>
     <div class="form-group">
       <label for="localization-name">Comment</label>
-      <input class="form-control" name="localization-comment" [(ngModel)]="localization.comment" placeholder="Optional"/>
+      <input class="form-control" id="localization-comment" [(ngModel)]="localization.comment" placeholder="Optional"/>
     </div>
-    <button class="btn btn-info" [disabled]="!localization.string" *ngIf="!localization._id" (click)="createLocalization(localization)">Create</button>
-    <button class="btn btn-success" [disabled]="!localization.string" *ngIf="!localization._id" (click)="duplicateLocalization(localization)">Duplicate</button>
-    <button class="btn btn-info" [disabled]="!localization.string" *ngIf="localization._id" (click)="updateLocalization(localization)">Update</button>
-    <button class="btn btn-danger" *ngIf="localization._id" (click)="deleteLocalization(localization._id)">Delete</button>
+    <button class="btn btn-info" [disabled]="!localization.string" *ngIf="!localization._id" id="create-button" (click)="createLocalization(localization)">Create</button>
+    <button class="btn btn-success" [disabled]="!localization.string" *ngIf="!localization._id" id="duplicate-button" (click)="duplicateLocalization(localization)">Duplicate</button>
+    <button class="btn btn-info" [disabled]="!localization.string" *ngIf="localization._id" id="update-button" (click)="updateLocalization(localization)">Update</button>
+    <button class="btn btn-danger" *ngIf="localization._id" id="delete-button" (click)="deleteLocalization(localization._id)">Delete</button>
   </form>
 </div>

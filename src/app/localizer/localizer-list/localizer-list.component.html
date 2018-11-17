@@ -3,7 +3,8 @@
   <div class="col-md-5">
     <h3>Languages</h3>
     <ul class="list-group-horizontal">
-      <li class="list-group-item"
+      <li id="language-{{language}}"
+        class="list-group-item"
         *ngFor="let language of languages"
         (click)="selectLanguage(language)"
         [class.active]="language === selectedLanguage">
@@ -22,7 +23,7 @@
         {{localization.string}}
       </li>
     </ul>
-    <button class="btn btn-primary" (click)="createNewLocalization()">New</button>
+    <button id="new-localization-button" class="btn btn-primary" (click)="createNewLocalization()">New</button>
     <button class="btn btn-warning" (click)="downloadLocalizations()">Download</button>
   </div>
   <div class="col-md-5 col-md-offset-2">
